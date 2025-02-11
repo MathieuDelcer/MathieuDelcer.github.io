@@ -7,7 +7,7 @@ tag: [kubernetes, orchestration, linux, certification]
 ---
 
 ## Context
-I prepared for the Kubernetes Certified Application Developer (CKAD) certification primarily using the [KodeKloud course](https://www.udemy.com/course/certified-kubernetes-application-developer/?srsltid=AfmBOoor5Dvoq2Nlo7QF8atbBD4qPKliplubQPY-ojSthI2T8jO1E6ET) with hands-on labs + [killer.sh](https://killer.sh/ckad). Here are the notes I took during my exam preparation.
+I prepared for the Kubernetes Certified Application Developer (CKAD) certification primarily using the [KodeKloud course](https://www.udemy.com/course/certified-kubernetes-application-developer/?srsltid=AfmBOoor5Dvoq2Nlo7QF8atbBD4qPKliplubQPY-ojSthI2T8jO1E6ET) with hands-on labs, followed by [killer.sh](https://killer.sh/ckad) at the end of my preparation, just before the real exam. Here are the notes I took during my exam preparation.
 
 ## EXPLAIN / HELP / OPTIONS
 - Get a list of all API versions 
@@ -27,7 +27,7 @@ I prepared for the Kubernetes Certified Application Developer (CKAD) certificati
 - Test a command without creating the resource
 `--dry-run=client`
 - Export output to a YAML file
-`-o yaml > fichier.yml`
+`-o yaml > file.yml`
 - Create an alias for kubectl
 `alias k=kubectl`
 - Create a variable (do) for exporting in YAML, then use it with $do
@@ -37,13 +37,15 @@ I prepared for the Kubernetes Certified Application Developer (CKAD) certificati
 - Display detailed information (wide output)
 `kubectl get pods -o wide`
 - Run a command as a specific user
-`kubectl get nodes --as nom_utilisateur`
+`kubectl get nodes --as username`
 - Create a temporary pod that deletes itself after running a command
-`kubectl run exemple --image=nginx --rm -it --restart=Never -- whoami`
-- Create a pod just to test a connection
-`k run tmp --restart=Never --rm -i --image=nginx:alpine -- curl 10.0.0.67`
 
-`k run tmp --restart=Never --rm -i --image=busybox -i -- wget -O- frontend:80`
+  `kubectl run exemple --image=nginx --rm -it --restart=Never -- whoami`
+- Create a pod just to test a connection:
+
+  `kubectl run tmp --restart=Never --rm -i --image=nginx:alpine -- curl 10.0.0.67`
+
+  `kubectl run tmp --restart=Never --rm -i --image=busybox -i -- wget -O- frontend:80`
 
 <br/>
 
@@ -61,27 +63,24 @@ I prepared for the Kubernetes Certified Application Developer (CKAD) certificati
 - Edit a pod
 `kubectl edit pod nginx`
 - Change the image of a pod
-`kubectl set image pod/nom_pod CONTAINER_NAME=IMAGE_NAME:TAG`
+`kubectl set image pod/pod_name CONTAINER_NAME=IMAGE_NAME:TAG`
 - Create a pod that allows traffic on port 8080
 `kubectl run custom-nginx --image=nginx --port=8080`
 - Create a pod and a service (ClusterIP type)
 `kubectl run custom-nginx --image=nginx --port=8080 --expose`
 - List pods
-`kubectl get pods`
-
-`kubectl get pod <name>`
+`kubectl get pods` / `kubectl get pod <name>`
 - Check pod status 
-`kubectl describe pods`
-
-`kubectl describe pod <name>`
+`kubectl describe pods` / `kubectl describe pod <name>`
 - View pod logs 
-`kubectl logs <nom_pod>`
+`kubectl logs <pod_name>`
 - View logs from the previous instance of a pod
 `kubectl logs nginx -p`
 - Delete a pod 
-`kubectl delete pod <name>`
 
-`kubectl delete pods <pod> --grace-period=0 --force` #To force deletion
+  `kubectl delete pod <name>`
+
+  `kubectl delete pods <pod> --grace-period=0 --force` #To force deletion
 
 - Delete all pods
 `kubectl delete pods --all`
@@ -90,18 +89,21 @@ I prepared for the Kubernetes Certified Application Developer (CKAD) certificati
 - Execute multiple commands inside an existing pod
 `kubectl exec exemple -- /bin/bash -c 'whoami;pwd'`
 - Create a pod and directly execute a command in it
-`kubectl run exemple --image=nginx -it --restart=Never -- whoami`
-- Run commands and arguments inside a pod
-`kubectl run nginx --image=nginx --command -- <cmd1> <arg1> <arg n>` #command + args if needed
 
-`kubectl run nginx --image=nginx -- <arg1> <arg n>` #only args
+  `kubectl run exemple --image=nginx -it --restart=Never -- whoami`
+- Run commands and arguments inside a pod 
+
+  `kubectl run nginx --image=nginx --command -- <cmd1> <arg1> <arg n>` #command + args if needed
+
+  `kubectl run nginx --image=nginx -- <arg1> <arg n>` #only args
 - Access a pod to run commands (-c to specify a particular container)
-`kubectl exec -it pod_name -c nom_container -- /bin/sh`
 
-`kubectl exec --stdin --tty nom_pod -- /bin/bash`
+  `kubectl exec -it pod_name -c container_name -- /bin/sh`
+
+  `kubectl exec --stdin --tty pod_name -- /bin/bash`
 - Schedule a pod on a specific node
 
-```
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -115,7 +117,7 @@ spec:
 ```
 - Schedule a pod on a node with a specific label
 
-```
+```yaml
 spec:
   containers:
   - name: nginx
@@ -130,7 +132,7 @@ spec:
 ## VOLUMES
 - PV
   
-```
+```yaml
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -148,7 +150,7 @@ spec:
 ```
 - PVC
   
-```
+```yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -163,7 +165,7 @@ spec:
 ```
 - Use PVC as Volume in a Pod
   
-```
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -211,7 +213,7 @@ spec:
 - List pods in all namespaces
 `kubectl get pods --all-namespaces`
 - Find the namespace of a pod
-`kubectl get pods --all-namespaces | grep <nom_pod>`
+`kubectl get pods --all-namespaces | grep <pod_name>`
 
 <br/>
 
@@ -225,12 +227,12 @@ spec:
 
 ## CONFIG MAPS
 - Create a ConfigMap with variables from a file
-`kubectl create cm nom_cm --from-file=nom_variable=fichier.txt`
+`kubectl create cm cm_name --from-file=variable_name=file.txt`
 - Create a ConfigMap that contains "TIME=60"
-`kubectl create cm nom_cm --from-literal=TIME=60`
+`kubectl create cm cm_name --from-literal=TIME=60`
 - Use the entire ConfigMap as environment variable(s)
 
-```
+```yaml
 spec:
   containers:
   - envFrom:
@@ -241,7 +243,7 @@ spec:
 ```
 - If you need a specific variable from the ConfigMap
 
-```
+```yaml
     env:
       - name: COLOR
         valueFrom:
@@ -251,7 +253,7 @@ spec:
 ```
 - Mount the ConfigMap in a volume and use it as a file in a pod
 
-```
+```yaml
 spec:
   containers:
   - name: mypod
@@ -270,12 +272,12 @@ spec:
 
 ## SECRETS
 - Create and pass password directly
-`kubectl create secret generic <nom_secret> --from-literal=DB_Host=sql --from-literal=id2=mdp2`
+`kubectl create secret generic <secret_name> --from-literal=DB_Host=sql --from-literal=id2=mdp2`
 - Create secret with certificate and key
-`kubectl create secret tls <nom_secret> --cert "/root/keys/server-tls.crt --key "/root/keys/server-tls.key`
+`kubectl create secret tls <secret_name> --cert "/root/keys/server-tls.crt --key "/root/keys/server-tls.key`
 - Use the secret as an environment variable
 
-```
+```yaml
 spec:
   containers:
   - image: kodekloud/simple-webapp-mysql
@@ -287,7 +289,7 @@ spec:
 ```
 - If you need a specific variable from the secret
 
-```
+```yaml
     env:
       - name: SECRET_USERNAME
         valueFrom:
@@ -297,7 +299,7 @@ spec:
 ```
 - Mount the secret in a volume and use it as a file in a pod
 
-```
+```yaml
 spec:
   containers:
   - name: mypod
@@ -316,11 +318,11 @@ spec:
 
 ## SECURITY CONTEXT
 - Who is executing the pod
-`kubectl exec nom_pod -- whoami`
+`kubectl exec pod_name -- whoami`
 
 - Choose the user that executes the process in a pod
 
-```
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -338,7 +340,7 @@ spec:
 ```
 - Add a capability
 
-```
+```yaml
 securityContext:
       capabilities:
         add: ["SYS_TIME"]
@@ -355,8 +357,8 @@ securityContext:
 - Here, the rule applies if the pod meets both conditions: ns=prod and name=api-pod:
 
 
-```
-- from 
+```yaml
+- from: 
   - podSelector:
       matchLabels:
         name: api-pod
@@ -366,8 +368,8 @@ securityContext:
 ```   
 Here, the rule applies if the pod meets either of the two conditions: ns=prod OR name=api-pod.
 
-```
-- from 
+```yaml
+- from:
   - podSelector:
       matchLabels:
         name: api-pod
@@ -376,10 +378,9 @@ Here, the rule applies if the pod meets either of the two conditions: ns=prod OR
         name: prod
 ```   
 
-- EXAMPLE 1:
-We need a new NetworkPolicy named np that restricts all Pods in Namespace space1 to only have outgoing traffic to Pods in Namespace space2 . Incoming traffic not affected. The NetworkPolicy should still allow outgoing DNS traffic on port 53 TCP and UDP.
+- EXAMPLE 1: We need a new NetworkPolicy named np that restricts all Pods in Namespace space1 to only have outgoing traffic to Pods in Namespace space2 . Incoming traffic not affected. The NetworkPolicy should still allow outgoing DNS traffic on port 53 TCP and UDP.
 
-```
+```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -403,9 +404,9 @@ spec:
 
 
 - EXAMPLE 2:
+  Create a network policy to allow traffic from the Internal application only to the payroll-service and db-service.
 
-Create a network policy to allow traffic from the Internal application only to the payroll-service and db-service.
-```
+```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -440,8 +441,8 @@ spec:
 - EXAMPLE 1:
 Create a new Ingress Resource for the service: my-video-service to be made available at the URL: http://ckad-mock-exam-solution.com:30093/video. Create an ingress resource with host: ckad-mock-exam-solution.com path: /video http://ckad-mock-exam-solution.com:30093/video should be accessible.
 
-`k create ingress video-ingress --rule=ckad-mock-exam-solution.com/video*=my-video-service:30093`
-```
+`kubectl create ingress video-ingress --rule=ckad-mock-exam-solution.com/video*=my-video-service:30093`
+```yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -472,7 +473,7 @@ The service account also creates a token, then a secret that uses this token, an
 
 - Add serviceaccountname
 
-```
+```yaml
 spec:
       serviceAccountName: dashboard-sa
 ```
@@ -483,15 +484,14 @@ spec:
 - TAINTS are set on NODES, and TOLERATIONS are set on PODS
 - List taints (for a node)
 `kubectl describe node <name> | grep -i taints`
-- Create a taint
-`kubectl taint nodes node01 <name>=<value>:<effect>`
+- Create a taint `kubectl taint nodes node01 <name>=<value>:<effect>`
 
-`kubectl taint nodes node1 key1=value1:NoSchedule`
+  `kubectl taint nodes node1 key1=value1:NoSchedule`
 - Remove a taint
 `kubectl taint nodes controlplane node-role.kubernetes.io/master:NoSchedule-`
 - Add a toleration to a pod
 
-```
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -527,7 +527,7 @@ spec:
 - Remove the 'app' label from a pod
 `kubectl label po nginx1 app-`
 - Add the label lab=test to all pods already labeled app=v2
-`k label pod -l app=v2 lab=test`
+`kubectl label pod -l app=v2 lab=test`
 
 <br/>
 
@@ -543,16 +543,14 @@ spec:
 
 ## SORTING
 - Sort by memory, CPU usage, etc.
-`kubectl top node`
+`kubectl top node`, `kubectl top pod`
 
-`kubectl top pod`
-
-`kubectl top node --sort-by='memory'`
+  `kubectl top node --sort-by='memory'`
 
 - Sort using a selector
 `kubectl get pod --selector env=prod`
 
-`kubectl get all --selector env=prod,bu=finance,tier=frontend`
+  `kubectl get all --selector env=prod,bu=finance,tier=frontend`
 
 <br/>
 
@@ -561,19 +559,19 @@ spec:
 `kubectl create job busybox --image=busybox -- /bin/sh -c 'echo hello;sleep 30;echo world'`
 - Important specifications that can be set in a Job:
 
-`completions: 5` #5 iterations
+  `completions: 5` #5 iterations
 
-`parallelism: 5`  #5 iterations in parallel
+  `parallelism: 5`  #5 iterations in parallel
 
-`activeDeadlineSeconds: 30` #Terminate if runtime exceeds 30 second
+  `activeDeadlineSeconds: 30` #Terminate if runtime exceeds 30 second
 
 <br/>
 
 ## CRON JOBS
 - Example: Create a CronJob
-`kubectl create cronjob <nom_cron_job> --image=<img> --schedule "* * * * *" --dry-run=client -o yaml > cronjob.yml` 
+`kubectl create cronjob <cron_job_name> --image=<img> --schedule "* * * * *" --dry-run=client -o yaml > cronjob.yml` 
 - Specify the limit of successful and failed jobs to keep in history (default = 3 successes / 1 failure)
-```
+```yaml
 spec:
   successfulJobsHistoryLimit: 10
   failedJobsHistoryLimit: 0
@@ -593,7 +591,7 @@ spec:
 - Switch to a specific context
 `kubectl config use-context developer`
 
-`kubectl config --kubeconfig=/path/config use-context <name>` 
+  `kubectl config --kubeconfig=/path/config use-context <name>` 
 - Set a default namespace for the current context
 `kubectl config set-context --current --namespace=NAMESPACE`
 - Create a context specifying a namespace, cluster, and user
@@ -605,9 +603,9 @@ spec:
 
 ## CLUSTER ROLE AND CLUSTER ROLE BINDING
 - Create a ClusterRole
-`kubectl create clusterrole nom_role --verb=get,list,watch --ressources=nodes`
+`kubectl create clusterrole role_name --verb=get,list,watch --ressources=nodes`
 - Create a ClusterRoleBinding
-`kubectl create clusterrolebinding name-role-binding --clusterrole=name-role  --user=nom_user`
+`kubectl create clusterrolebinding name-role-binding --clusterrole=name-role  --user=username`
 
 <br/>
 
@@ -646,15 +644,15 @@ spec:
 
 ## API DEPRECIATIONS
 - Show installed Kubernetes version
-`k version --short`
+`kubectl version --short`
 - Find the API group of a resource
-`k explain deploy`
+`kubectl explain deploy`
 ```
 This will show VERSION: apps/v1 .
 The version is displayed as VERSION: {group}/{version}.
 ```
 - Change the version in a YAML file on the first line
-```
+```yaml
 apiVersion: batch/v1
 kind: CronJob
 ```
@@ -687,7 +685,7 @@ kind: CronJob
 - View the list of configurable values and use them during installation
 `helm show values bitnami/apache`
 
-`helm show values bitnami/apache | yq e #parse yaml and show with colors`
+  `helm show values bitnami/apache | yq e #parse yaml and show with colors`
 
 <br/>
 
@@ -709,8 +707,6 @@ kind: CronJob
 - create and start a container (-d : container runs in background --name to give it a name)
 `docker run -d --name mycontainer <image>`
 - list container (-a to list all, including non-running containers)
-`docker container ls -a`
-
-`docker ps`
+`docker container ls -a`, `docker ps`
 - logs
 `docker container ls -a`

@@ -7,31 +7,28 @@ tag: [kubernetes, orchestration, linux, certification]
 ---
 
 ## Context
-I prepared for the Certified Kubernetes Administrator (CKA) certification primarily using the [KodeKloud course](https://www.udemy.com/course/certified-kubernetes-administrator-with-practice-tests/?srsltid=AfmBOooQ_HP2nCpwTQPz7rRPilclKdxyp6vLB1SaPTGJPbeYjsLmptYq&couponCode=24T5MT071025) with hands-on labs + [killer.sh](https://killer.sh/cka). Here are the notes I took during my exam preparation.
+I prepared for the Certified Kubernetes Administrator (CKA) certification primarily using the [KodeKloud course](https://www.udemy.com/course/certified-kubernetes-administrator-with-practice-tests/?srsltid=AfmBOooQ_HP2nCpwTQPz7rRPilclKdxyp6vLB1SaPTGJPbeYjsLmptYq&couponCode=24T5MT071025) with hands-on labs, followed by [killer.sh](https://killer.sh/cka) at the end of my preparation, just before the real exam. Here are the notes I took during my exam preparation.
 
 ## DNS
 DNS for Services and Pods
 - Instead of using an IP address, a service can be contacted via its DNS name.
 - The DNS format: `service_name.namespace.service.domain`
-- Example:
-  ```
-  db-service.dev.svc.cluster.local
-  ```
+- Example:`db-service.dev.svc.cluster.local`
 
 ---
 
 ## Checking Component Configuration
 Example: kube-apiserver
 - **Using its manifest file:**
-  ```
+  ```sh
   cat /etc/kubernetes/manifests/kube-apiserver.yaml
   ```
 - **Checking the existing pod:**
-  ```
+  ```sh
   kubectl get po -n kube-system kube-apiserver -o yaml
   ```
 - **Checking the process (on the control plane):**
-  ```
+  ```sh
   ps -aux
   ```
 
@@ -39,11 +36,11 @@ Example: kube-apiserver
 
 ## Kubectl Configuration
 - View current configuration:
-  ```
+  ```sh
   kubectl config view
   ```
 - Switch to an existing context:
-  ```
+  ```sh
   kubectl config use-context contextName
   ```
 
@@ -260,7 +257,7 @@ kubectl uncordon controlplane
 
 ### Example 2: upgrade worker node
 ```sh
-kubectl drain node01 --ignore-daemonsets #Depuis controlplane
+kubectl drain node01 --ignore-daemonsets #From controlplane
 
 ssh node01
 
@@ -277,7 +274,7 @@ apt-mark hold kubelet kubectl
 sudo systemctl daemon-reload
 sudo systemctl restart kubelet
 
-kubectl uncordon node01 #Depuis controlplane
+kubectl uncordon node01 #From controlplane
 ```
 
 ---
@@ -333,7 +330,7 @@ ETCDCTL_API=3 etcdctl member list
 
 To create a backup of ETCD, find the data directory location in the `etcd.service` file:
 ```bash
-systemctl list-unit-files # Find the name of the "etcd.service" file
+systemctl list-unit-files #Find the name of the "etcd.service" file
 systemctl cat etcd.service 
 --data-dir=/var/lib/etcd-data
 ```
@@ -424,7 +421,7 @@ spec:
   - key encipherment
   - server auth
   request:
-    # Replace with the base64 encoded CSR content
+    #Replace with the base64 encoded CSR content
     contenu_certificat_csr_encodé_en_base64
 ```
 Note: to get the base64-encoded CSR content, you can use a command like this:
@@ -588,7 +585,7 @@ mv /root/my-kube-config /root/.kube/config
 ```sh
 kubectl get nodes
 kubectl get pods -n kube-system
-kubectl logs kube-apiserver-master -n kube-system #check controlplane logs components
+kubectl logs kube-apiserver-master -n kube-system #Check controlplane logs components
 ```
 
 ### If deployed by services
