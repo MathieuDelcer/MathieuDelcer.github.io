@@ -303,22 +303,22 @@ volumes:
 ```
 If you are logged into the server where ETCD is running:
 
-View the ETCD process configuration
+View the ETCD process configuration:
 ```bash
 ps -ef | grep -i etcd
 ```
 
-View the ETCD pod configuration file
+View the ETCD pod configuration file:
 ```bash
 cat /etc/kubernetes/manifests/etcd.yml
 ```
 
-Filter the output to show only certificate files
+Filter the output to show only certificate files:
 ```bash
 cat /etc/kubernetes/manifests/etcd.yml | grep file
 ```
 
-Alternative: view the ETCD pod configuration in YAML format
+Alternative: view the ETCD pod configuration in YAML format:
 ```bash
 kubectl get po -n kube-system etcd-controlplane -o yaml
 ```
@@ -358,7 +358,7 @@ ETCDCTL_API=3 etcdctl snapshot status snapshot.db
 ```
 
 ### Restore ETCD
-Indicate the new path for the restored backup
+Indicate the new path for the restored backup:
 ```sh
 ETCDCTL_API=3 etcdctl snapshot restore snapshot.db --data-dir /var/lib/etcd-from-backup
 ```
@@ -428,7 +428,7 @@ Note: to get the base64-encoded CSR content, you can use a command like this:
 ```bash
 cat admin2.csr | base64 -w 0
 ```
-After applying the object, verify the pending CSRs using `kubectl`:
+After applying the object, verify the pending CSRs:
 ```bash
 kubectl get csr
 ```
@@ -552,24 +552,24 @@ users:
 - Default context
 By default, you will be using the `current-context`.
 
-- Switching to a different context  
+- Switching to a different context: 
 ```sh
 kubectl config use-context prod-user@production
 ```
 
-- Using a custom config File  
+- Using a custom config File: 
 ```sh
 kubectl config use-context --kubeconfig=/root/my-kube-config research
 ```
 
-- Verifying the used configuration
+- Verifying the used configuration:
    
 ```sh
 kubectl config view
 kubectl config view --kubeconfig=my-custom-config
 ```
 
-- Setting a custom KUBECONFIG File as Default
+- Setting a custom KUBECONFIG File as Default:
 
 To set a custom `KUBECONFIG` file as default, move it to the following location:
 
@@ -589,7 +589,7 @@ kubectl logs kube-apiserver-master -n kube-system #Check controlplane logs compo
 ```
 
 ### If deployed by services
-Check if kubelet running & kube-apiserver logs
+Check if kubelet running & kube-apiserver logs:
 ```sh
 ps aux | grep kubelet 
 sudo journalctl -u kube-apiserver 
@@ -657,18 +657,18 @@ crictl inspect container_id | grep runtimeType
 crictl logs container_id
 ```
 
-Find CNI (Container Network Interface)
+Find CNI (Container Network Interface):
 ```sh
 ls /etc/cni/net. d
 ```
 
-Check kubeadm version and possible upgrades
+Check kubeadm version and possible upgrades:
 ```sh
 kubeadm version
 kubeadm upgrade plan
 ```
 
-Update worker node and join the cluster
+Update worker node and join the cluster:
 ```sh
 ssh worker-node
 apt install kubectl=1.28.2-00 kubelet=1.28.2-00
@@ -681,7 +681,7 @@ ssh worker-node
 <copy_output>
 ```
 
-Backup all resources yaml
+Backup all kubernetes resources in all namespaces:
 ```sh
 kubectl get all -A -o yaml > all-deploy-services.yml
 ```

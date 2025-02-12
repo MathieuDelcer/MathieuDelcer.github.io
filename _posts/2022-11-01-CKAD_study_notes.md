@@ -41,7 +41,7 @@ I prepared for the Kubernetes Certified Application Developer (CKAD) certificati
 - Create a temporary pod that deletes itself after running a command
 
   `kubectl run exemple --image=nginx --rm -it --restart=Never -- whoami`
-- Create a pod just to test a connection:
+- Create a pod just to test a connection
 
   `kubectl run tmp --restart=Never --rm -i --image=nginx:alpine -- curl 10.0.0.67`
 
@@ -76,7 +76,7 @@ I prepared for the Kubernetes Certified Application Developer (CKAD) certificati
 `kubectl logs <pod_name>`
 - View logs from the previous instance of a pod
 `kubectl logs nginx -p`
-- Delete a pod 
+- Delete a pod
 
   `kubectl delete pod <name>`
 
@@ -91,7 +91,7 @@ I prepared for the Kubernetes Certified Application Developer (CKAD) certificati
 - Create a pod and directly execute a command in it
 
   `kubectl run exemple --image=nginx -it --restart=Never -- whoami`
-- Run commands and arguments inside a pod 
+- Run commands and arguments inside a pod
 
   `kubectl run nginx --image=nginx --command -- <cmd1> <arg1> <arg n>` #command + args if needed
 
@@ -220,7 +220,7 @@ spec:
 ## SERVICE
 - Create a Service named redis-service of type ClusterIP to expose pod redis on port 6379
 `kubectl expose pod redis --port=6379 --name=redis-service --dry-run=client -o yaml > redis-service.yml`
-- Create a Service named nginx of type NodePort to expose pod nginx's port 80 on port 30080 on the nodes:
+- Create a Service named nginx of type NodePort to expose pod nginx's port 80 on port 30080 on the nodes
 `kubectl create service nodeport nginx --tcp=80:80 --node-port=30080 --dry-run=client -o yaml > nginx-svc.yml` #then add nodePort: 30080 in the template
 
 <br/>
@@ -320,7 +320,7 @@ spec:
 - Who is executing the pod
 `kubectl exec pod_name -- whoami`
 
-- Choose the user that executes the process in a pod
+- Specify the user that runs the process inside the pod
 
 ```yaml
 apiVersion: v1
@@ -354,8 +354,7 @@ securityContext:
 
 - When creating a rule, be cautious with the use of "-", as it changes the behavior of the rule.
 
-- Here, the rule applies if the pod meets both conditions: ns=prod and name=api-pod:
-
+- Here, the rule applies if the pod meets both conditions: ns=prod and name=api-pod
 
 ```yaml
 - from: 
@@ -366,7 +365,7 @@ securityContext:
       matchLabels:
         name: prod
 ```   
-Here, the rule applies if the pod meets either of the two conditions: ns=prod OR name=api-pod.
+Here, the rule applies if the pod meets either of the two conditions: ns=prod OR name=api-pod
 
 ```yaml
 - from:
@@ -471,7 +470,7 @@ A User account is used by humans (Admin, Developer...)
 While a Service account is used by machines (Prometheus, Jenkins...)
 The service account also creates a token, then a secret that uses this token, and finally links it to the service account
 
-- Add serviceaccountname
+- Configure Service Accounts for pods
 
 ```yaml
 spec:
@@ -704,7 +703,7 @@ kind: CronJob
 `docker container create <image> `
 - start container 
 `docker container start <id>`
-- create and start a container (-d : container runs in background --name to give it a name)
+- create and start a container (-d : container runs in background)
 `docker run -d --name mycontainer <image>`
 - list container (-a to list all, including non-running containers)
 `docker container ls -a`, `docker ps`
