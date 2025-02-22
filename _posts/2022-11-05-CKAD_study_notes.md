@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Kubernetes CKAD Certification Study Notes
-date: 01-11-2022
+date: 05-11-2022
 categories: [study-notes]
 tag: [kubernetes, orchestration, linux, certification]
 ---

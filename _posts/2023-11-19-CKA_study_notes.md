@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Kubernetes CKA Certification Study Notes
-date: 01-11-2023
+date: 19-11-2023
 categories: [study-notes]
 tag: [kubernetes, orchestration, linux, certification]
 ---
