@@ -1674,9 +1674,11 @@ Alternative with the graphical interface
 
 `<destination_network> via <gateway>` #Line to add
 
-## Packet Filtering 
+## Firewall 
 
-### With UFW (Ubuntu)
+### UFW (Ubuntu)
+
+*Uncomplicated Firewall*
 
 **Check Status**
 
@@ -1712,7 +1714,7 @@ Rules are applied according to their numbered order.
 
 `sudo ufw deny out on enp0s3 to 8.8.8.8` #Block all outgoing traffic from the network card enp0s3 to 8.8.8.8
 
-### With firewalld (CentOS)
+### Firewalld (CentOS)
 
 **Check zones and firewall rules**
 
@@ -1755,6 +1757,42 @@ It is also possible to add a rule directly to the permanent configuration:
 `sudo firewall-cmd --add-port=12345/tcp` #First, add the rule for the active session
 
 `sudo firewall-cmd --add-port=12345/tcp --permanent` #Then, make the rule permanent
+
+### nftables
+
+*Nftables is providing filtering and classification of network packets/datagrams/frames. It aims to replace the existing iptables.*
+
+`nft list tables` #Lists all tables in the nftables configuration.
+
+`nft add table inet my_table` #Adds a new table named "my_table" in the "inet" address family.
+
+`nft delete table inet my_table` #Deletes the table named "my_table" from the "inet" address family.
+
+`nft list ruleset` #Lists all rules in the nftables ruleset.
+
+`nft add rule inet my_table my_chain tcp dport 80 accept` #Adds a rule to the chain "my_chain" in the "my_table" table to accept TCP traffic on port 80.
+
+`nft delete rule inet my_table my_chain tcp dport 80 accept` #Deletes the specified rule from the "my_chain" chain in the "my_table" table.
+
+`nft flush table inet my_table` #Flushes all rules from the "my_table" table in the "inet" address family.
+
+`nft add chain inet my_table my_chain { type filter hook input priority 0 \; }` #Adds a new chain named "my_chain" to the "my_table" table in the "inet" address family with filter type and input hook.
+
+`nft delete chain inet my_table my_chain` #Deletes the chain named "my_chain" from the "my_table" table in the "inet" address family.
+
+### iptables
+
+`iptables -L` #Lists all rules in the iptables configuration.
+ 
+`iptables -A INPUT -p tcp --dport 80 -j ACCEPT` #Appends a rule to accept TCP traffic on port 80 to the INPUT chain.
+ 
+`iptables -D INPUT -p tcp --dport 80 -j ACCEPT` #Deletes the specified rule from the INPUT chain that accepts TCP traffic on port 80.
+ 
+`iptables -F` #Flushes all rules from all chains.
+ 
+`iptables -N my_chain` #Creates a new chain named "my_chain".
+ 
+`iptables -X my_chain` #Deletes the chain named "my_chain".
 
 ## Port Redirection
 
@@ -1834,45 +1872,7 @@ To create new zones:
 
 `sudo cp --preserve=ownership /var/named/named.localhost /var/named/example.com.zone` #Use named.localhost as a template (maintain file ownership)
 
-
-
-## Firewall rules
-
-### nft (nftables)
-
-`nft list tables` #Lists all tables in the nftables configuration.
-
-`nft add table inet my_table` #Adds a new table named "my_table" in the "inet" address family.
-
-`nft delete table inet my_table` #Deletes the table named "my_table" from the "inet" address family.
-
-`nft list ruleset` #Lists all rules in the nftables ruleset.
-
-`nft add rule inet my_table my_chain tcp dport 80 accept` #Adds a rule to the chain "my_chain" in the "my_table" table to accept TCP traffic on port 80.
-
-`nft delete rule inet my_table my_chain tcp dport 80 accept` #Deletes the specified rule from the "my_chain" chain in the "my_table" table.
-
-`nft flush table inet my_table` #Flushes all rules from the "my_table" table in the "inet" address family.
-
-`nft add chain inet my_table my_chain { type filter hook input priority 0 \; }` #Adds a new chain named "my_chain" to the "my_table" table in the "inet" address family with filter type and input hook.
-
-`nft delete chain inet my_table my_chain` #Deletes the chain named "my_chain" from the "my_table" table in the "inet" address family.
-
-### iptables
-
-`iptables -L` #Lists all rules in the iptables configuration.
- 
-`iptables -A INPUT -p tcp --dport 80 -j ACCEPT` #Appends a rule to accept TCP traffic on port 80 to the INPUT chain.
- 
-`iptables -D INPUT -p tcp --dport 80 -j ACCEPT` #Deletes the specified rule from the INPUT chain that accepts TCP traffic on port 80.
- 
-`iptables -F` #Flushes all rules from all chains.
- 
-`iptables -N my_chain` #Creates a new chain named "my_chain".
- 
-`iptables -X my_chain` #Deletes the chain named "my_chain".
-
-## Time Zone - NTP
+## NTP
 
 **Configure the Time Zone**
 
@@ -2173,7 +2173,7 @@ LogLevel warn => To choose the log level
 
 `sudo vim /etc/aliases` #Add: "alias_name: username" at the end
 
-Exemple:
+Example:
 
 ```
 advertising: test

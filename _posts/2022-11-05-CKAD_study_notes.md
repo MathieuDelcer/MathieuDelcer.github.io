@@ -40,7 +40,7 @@ I prepared for the Kubernetes Certified Application Developer (CKAD) certificati
 `kubectl get nodes --as username`
 - Create a temporary pod that deletes itself after running a command
 
-  `kubectl run exemple --image=nginx --rm -it --restart=Never -- whoami`
+  `kubectl run example --image=nginx --rm -it --restart=Never -- whoami`
 - Create a pod just to test a connection
 
   `kubectl run tmp --restart=Never --rm -i --image=nginx:alpine -- curl 10.0.0.67`
@@ -87,10 +87,10 @@ I prepared for the Kubernetes Certified Application Developer (CKAD) certificati
 - Execute a command inside an existing pod
 `kubectl exec [POD] -- [COMMAND]`
 - Execute multiple commands inside an existing pod
-`kubectl exec exemple -- /bin/bash -c 'whoami;pwd'`
+`kubectl exec example -- /bin/bash -c 'whoami;pwd'`
 - Create a pod and directly execute a command in it
 
-  `kubectl run exemple --image=nginx -it --restart=Never -- whoami`
+  `kubectl run example --image=nginx -it --restart=Never -- whoami`
 - Run commands and arguments inside a pod
 
   `kubectl run nginx --image=nginx --command -- <cmd1> <arg1> <arg n>` #command + args if needed
