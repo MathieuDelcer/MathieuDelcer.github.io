@@ -1678,7 +1678,7 @@ Alternative with the graphical interface
 
 ### UFW (Ubuntu)
 
-*Uncomplicated Firewall*
+*Uncomplicated Firewall: UFW is a service which loads rules into iptables by default, but can use nftables on newer systems.*
 
 **Check Status**
 
@@ -1715,6 +1715,8 @@ Rules are applied according to their numbered order.
 `sudo ufw deny out on enp0s3 to 8.8.8.8` #Block all outgoing traffic from the network card enp0s3 to 8.8.8.8
 
 ### Firewalld (CentOS)
+
+*Firewalld is a service which loads rules into nftables.*
 
 **Check zones and firewall rules**
 
