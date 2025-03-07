@@ -1640,9 +1640,9 @@ Define routes in the netplan file (YAML format)
 
 ```yaml
 routes:
-        - to: 0.0.0.0/0 # Route par défaut pour toutes les adresses
-          via: 192.168.1.1 # Passerelle pour la route par défaut
-          on-link: true # la route spécifiée est directement accessible via une interface réseau disponible localement sur le même sous-réseau.
+        - to: 0.0.0.0/0 #Default route for all addresses
+          via: 192.168.1.1 #Gateway for the default route
+          on-link: true #The specified route is directly accessible through a locally available network interface on the same subnet.
 ```
 
 `sudo netplan apply` #Apply changes
